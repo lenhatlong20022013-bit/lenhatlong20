@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lê Nhật Long</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;800&family=Be+Vietnam+Pro:wght@400;500;600&display=swap">
+<style>
+  :root { --sky:#dcebff; --navy:#0f2a5c; --sun:#ffc93c; --blue:#2f6bff; }
+  * { box-sizing: border-box; margin: 0; }
+  html { scroll-snap-type: y mandatory; scroll-behavior: smooth; background: var(--navy); }
+  body { font-family: "Be Vietnam Pro", system-ui, sans-serif; line-height: 1.6; color: var(--navy); }
+
+  .screen {
+    min-height: 100vh; min-height: 100svh;
+    scroll-snap-align: start;
+    display: grid; place-items: center;
+    padding: 40px 28px;
+    position: relative; overflow: hidden;
+  }
+  .inner { width: 100%; max-width: 720px; position: relative; z-index: 1; }
+
+  .s-sky   { background: var(--sky);  color: var(--navy); }
+  .s-sun   { background: var(--sun);  color: var(--navy); }
+  .s-navy  { background: var(--navy); color: var(--sky); }
+  .s-blue  { background: var(--blue); color: #fff; }
+
+  .label { font-size: 1.05rem; font-weight: 500; opacity: .8; margin-bottom: 10px; }
+  .big {
+    font-family: "Baloo 2", system-ui, sans-serif; font-weight: 800;
+    line-height: 1; letter-spacing: -0.02em;
+    font-size: clamp(2.6rem, 13vw, 6rem);
+    overflow-wrap: anywhere;
+  }
+  .big.name { font-size: clamp(3.6rem, 18vw, 8rem); line-height: .92; }
+  .note { margin-top: 18px; font-size: 1.1rem; max-width: 46ch; }
+
+  .btn {
+    display: inline-block; margin-top: 26px;
+    padding: 14px 28px; border-radius: 999px;
+    font-weight: 600; text-decoration: none;
+    background: var(--navy); color: var(--sky);
+    transition: transform .2s, background .2s, color .2s;
+  }
+  .btn:hover { transform: translateY(-3px); }
+  .btn:focus-visible, .dots a:focus-visible { outline: 3px solid var(--sun); outline-offset: 3px; }
+  .s-navy .btn, .s-blue .btn { background: var(--sun); color: var(--navy); }
+
+  /* Mặt trời ở màn đầu */
+  .sun {
+    position: absolute; right: -90px; top: 8%;
+    width: min(70vw, 420px); aspect-ratio: 1; border-radius: 50%;
+    background: var(--sun);
+    transform: scale(var(--s, 1)); opacity: var(--o, 1);
+  }
+  .hint { margin-top: 36px; font-weight: 500; animation: bob 1.8s ease-in-out infinite; }
+
+  /* Hiện dần khi lướt tới */
+  .reveal { opacity: 0; transform: translateY(40px); transition: opacity .7s ease, transform .7s ease; }
+  .reveal.d2 { transition-delay: .12s; }
+  .reveal.d3 { transition-delay: .24s; }
+  .screen.in .reveal { opacity: 1; transform: none; }
+
+  /* Chấm điều hướng */
+  .dots { position: fixed; right: 14px; top: 50%; transform: translateY(-50%); z-index: 5; display: grid; gap: 12px; }
+  .dots a { width: 12px; height: 12px; border-radius: 50%; border: 2px solid currentColor; display: block; opacity: .55; color: var(--navy); background: rgba(255,255,255,.55); }
+  .dots a.on { opacity: 1; background: var(--sun); border-color: var(--navy); transform: scale(1.3); }
+
+  @keyframes bob { 0%,100% { transform: translateY(0); } 50% { transform: translateY(8px); } }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .hint { animation: none; }
+    .reveal { opacity: 1; transform: none; transition: none; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="dots" aria-label="Các phần">
+  <a href="#p1" aria-label="Giới thiệu"></a>
+  <a href="#p2" aria-label="Ngày sinh"></a>
+  <a href="#p3" aria-label="Facebook"></a>
+  <a href="#p4" aria-label="Zalo"></a>
+  <a href="#p5" aria-label="Gmail"></a>
+</nav>
+
+<section class="screen s-sky" id="p1">
+  <div class="sun" id="sun" aria-hidden="true"></div>
+  <div class="inner">
+    <p class="label reveal">Xin chào, mình là</p>
+    <h1 class="big name reveal d2">Lê<br>Nhật<br>Long</h1>
+    <p class="hint reveal d3">Lướt xuống để biết thêm về mình</p>
+  </div>
+</section>
+
+<section class="screen s-navy" id="p2">
+  <div class="inner">
+    <p class="label reveal">Ngày sinh</p>
+    <p class="big reveal d2">20/02/2013</p>
+    <p class="note reveal d3">Năm nay mình <strong id="age"></strong> tuổi.</p>
+  </div>
+</section>
+
+<section class="screen s-blue" id="p3">
+  <div class="inner">
+    <p class="label reveal">Facebook</p>
+    <p class="big reveal d2">lenhatlong<br>200213</p>
+    <a class="btn reveal d3" href="https://www.facebook.com/lenhatlong200213" target="_blank" rel="noopener">Mở Facebook của Long</a>
+  </div>
+</section>
+
+<section class="screen s-sky" id="p4">
+  <div class="inner">
+    <p class="label reveal">Zalo</p>
+    <p class="big reveal d2">0862 878 500</p>
+    <a class="btn reveal d3" href="https://zalo.me/0862878500" target="_blank" rel="noopener">Nhắn Zalo cho Long</a>
+  </div>
+</section>
+
+<section class="screen s-sun" id="p5">
+  <div class="inner">
+    <p class="label reveal">Gmail</p>
+    <p class="big reveal d2" style="font-size:clamp(1.6rem,7.5vw,3.4rem)">lenhatlong20.contact<br>@gmail.com</p>
+    <a class="btn reveal d3" href="mailto:lenhatlong20.contact@gmail.com">Gửi email cho Long</a>
+  </div>
+</section>
+
+<script>
+  // Tính tuổi từ ngày sinh 20/02/2013
+  (function () {
+    var b = new Date(2013, 1, 20), t = new Date();
+    var age = t.getFullYear() - b.getFullYear();
+    if (t < new Date(t.getFullYear(), b.getMonth(), b.getDate())) age--;
+    document.getElementById("age").textContent = age;
+  })();
+
+  var screens = document.querySelectorAll(".screen");
+  var dots = document.querySelectorAll(".dots a");
+
+  // Mỗi lần lướt tới một phần, thông tin của phần đó hiện ra
+  if ("IntersectionObserver" in window) {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) {
+          e.target.classList.add("in");
+          var i = Array.prototype.indexOf.call(screens, e.target);
+          dots.forEach(function (d, n) { d.classList.toggle("on", n === i); });
+        } else {
+          e.target.classList.remove("in");
+        }
+      });
+    }, { threshold: 0.55 });
+    screens.forEach(function (s) { io.observe(s); });
+  } else {
+    screens.forEach(function (s) { s.classList.add("in"); });
+  }
+
+  // Mặt trời phóng to và mờ dần khi lướt khỏi màn đầu
+  var sun = document.getElementById("sun");
+  window.addEventListener("scroll", function () {
+    var p = Math.min(window.scrollY / window.innerHeight, 1);
+    sun.style.setProperty("--s", 1 + p * 0.8);
+    sun.style.setProperty("--o", 1 - p);
+  }, { passive: true });
+</script>
+</body>
+</html>
